@@ -657,11 +657,15 @@ WE ORTOPEDIA CONTEMPORANEA LTDA
       return normalize(name)
         .replace(/\b\d{2}\.?\d{3}\.?\d{3}\/\d{4}-?\d{2}\b/g, ' ')
         .replace(/\b\d{2}\/\d{2}\/\d{4}\b/g, ' ')
+        .replace(/[.,()/\-]/g, ' ')
+        .replace(/\b(s\/s|s\.a|ltda|eireli|me|ss|sa)\b/g, ' ')
+        .replace(/\b(filial|matriz|unidade)\b/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
     };
 
-    const inactiveNetworks = new Set(inactiveNetworkNamesRaw.map(sanitizeNetworkName));
+    const inactiveNetworkNames = inactiveNetworkNamesRaw.map(sanitizeNetworkName);
+    const inactiveNetworks = new Set(inactiveNetworkNames);
 
     const getSimilarityMapping = (specialties) => {
       const map = {};
@@ -702,7 +706,15 @@ WE ORTOPEDIA CONTEMPORANEA LTDA
 
     const isInactiveNetwork = (entry) => {
       const networkName = sanitizeNetworkName(entry?.nome);
-      return inactiveNetworks.has(networkName);
+      if (!networkName) return false;
+      if (inactiveNetworks.has(networkName)) return true;
+
+      return inactiveNetworkNames.some((inactiveName) => {
+        if (!inactiveName) return false;
+        const shorter = networkName.length <= inactiveName.length ? networkName : inactiveName;
+        const longer = networkName.length > inactiveName.length ? networkName : inactiveName;
+        return shorter.length >= 12 && longer.includes(shorter);
+      });
     };
 
     const loadSpecialties = async () => {
