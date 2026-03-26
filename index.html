@@ -400,6 +400,14 @@
           <input type="text" id="estado" placeholder="Ex.: DF" />
         </div>
         <div class="field">
+          <label for="statusRede">Status da rede</label>
+          <select id="statusRede">
+            <option value="all" selected>Ativo e Descredenciado</option>
+            <option value="active">Ativas</option>
+            <option value="inactive">Descredenciadas</option>
+          </select>
+        </div>
+        <div class="field">
           <label for="procedimento">Procedimento</label>
           <input type="text" id="procedimento" list="procedimentosList" placeholder="Ex.: Exame de sangue" />
           <datalist id="procedimentosList"></datalist>
@@ -411,7 +419,7 @@
   </div>
 
   <footer>
-    <p>Versão: 2.0.0</p>
+    <p>Versão: 2.2.0</p>
     <p>Desenvolvido por: Rafael Barros</p>
   </footer>
 
@@ -812,10 +820,17 @@ WE ORTOPEDIA CONTEMPORANEA LTDA
       const cidade = normalize(document.getElementById('cidade').value);
       const estado = normalize(document.getElementById('estado').value);
       const procedimento = normalize(document.getElementById('procedimento').value);
+      const statusRede = document.getElementById('statusRede')?.value || 'all';
 
       const canonicalSearchTerm = similarityMap[especialidadeInput] || especialidadeInput;
 
       const results = data.filter(entry => {
+        const isInactive = isInactiveNetwork(entry);
+        const statusMatch =
+          statusRede === 'all' ||
+          (statusRede === 'active' && !isInactive) ||
+          (statusRede === 'inactive' && isInactive);
+
         const entrySpecialties = entry.especialidade ? entry.especialidade.split(/, |[\n]/).map(s => normalize(s)) : [];
         const entrySpecialtiesCanonical = entrySpecialties.map(s => similarityMap[s] || s);
 
@@ -836,7 +851,8 @@ WE ORTOPEDIA CONTEMPORANEA LTDA
           }
         }
 
-        return (!nome || normalize(entry.nome).includes(nome)) &&
+        return statusMatch &&
+               (!nome || normalize(entry.nome).includes(nome)) &&
                specialtyMatch &&
                (!bairro || normalize(entry.bairro).includes(bairro)) &&
                (!cidade || normalize(entry.cidade).includes(cidade)) &&
@@ -857,7 +873,7 @@ WE ORTOPEDIA CONTEMPORANEA LTDA
       results.forEach(entry => {
         const isInactive = isInactiveNetwork(entry);
         const statusClass = isInactive ? 'inactive' : 'active';
-        const statusLabel = isInactive ? 'Nao atende mais' : 'Ativa';
+        const statusLabel = isInactive ? 'Descredenciado' : 'Ativa';
         const procedimentoHtml = entry.procedimento && (Array.isArray(entry.procedimento) ? entry.procedimento.length > 0 : entry.procedimento.trim() !== '') 
           ? `<p><strong>Procedimento:</strong> ${Array.isArray(entry.procedimento) ? entry.procedimento.join(', ') : entry.procedimento}</p>` 
           : '';
