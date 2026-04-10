@@ -8,402 +8,83 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      line-height: 1.6;
-      color: #2d3748;
-    }
-    header {
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      text-align: center;
-      padding: 2rem 1rem;
-      border-bottom: 3px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-    header img {
-      max-width: 320px;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(41, 98, 255, 0.15);
-      transition: transform 0.3s ease;
-    }
-    header img:hover {
-      transform: scale(1.02);
-    }
-    .container {
-      padding: 2.5rem 1.5rem;
-      max-width: 1400px;
-      margin: auto;
-      flex: 1;
-      width: 100%;
-    }
-    .btns {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-    }
-    button {
-      padding: 1.1rem 2.5rem;
-      font-size: 1.05rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    button::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    button:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-    button:active {
-      transform: translateY(0);
-    }
-    .direta {
-      background: linear-gradient(135deg, #2962ff 0%, #00c853 100%);
-    }
-    .indireta {
-      background: linear-gradient(135deg, #2962ff 0%, #ffab00 100%);
-    }
-    form {
-      display: none;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-      background: white;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    input, select {
-      padding: 0.95rem 1.2rem;
-      border-radius: 10px;
-      border: 2px solid #e2e8f0;
-      width: 100%;
-      font-size: 0.95rem;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      background-color: #ffffff;
-    }
-    input:hover, select:hover {
-      border-color: #cbd5e0;
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: #2962ff;
-      box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.1);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .result {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
-      transition: all 0.3s ease;
-    }
-    .result.active {
-      border-left: 5px solid #16a34a;
-    }
-    .result.inactive {
-      border-left: 5px solid #dc2626;
-    }
-    .result-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-    .result h3 {
-      margin: 0;
-      color: #2962ff;
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      border-radius: 999px;
-      padding: 0.25rem 0.65rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .status-pill.active {
-      background: #dcfce7;
-      color: #166534;
-      border: 1px solid #86efac;
-    }
-    .status-pill.inactive {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
-    }
-    .result p {
-      margin: 0.75rem 0;
-      font-size: 0.95rem;
-      color: #4a5568;
-      line-height: 1.6;
-    }
-    .result p strong {
-      color: #2d3748;
-      font-weight: 600;
-      display: inline-block;
-      min-width: 100px;
-    }
-    .result p:last-child {
-      margin-bottom: 0;
-    }
-    .result a {
-      color: #2962ff;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-    .result a:hover {
-      color: #00c853;
-      text-decoration: underline;
-    }
-    /* Campos e layout refinados */
-    .field {
-      position: relative;
-    }
-    .field label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      color: #2d3748;
-      letter-spacing: -0.01em;
-    }
-    /* Barra de contexto */
-    .context-bar {
-      background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 100%);
-      border: 2px solid #c7d2fe;
-      padding: 1rem 1.5rem;
-      border-radius: 14px;
-      margin-bottom: 1.5rem;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      box-shadow: 0 2px 8px rgba(41, 98, 255, 0.1);
-    }
-    .context-bar > div {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-      color: #2d3748;
-    }
-    .context-bar .pill {
-      background: linear-gradient(135deg, #2962ff 0%, #1e40af 100%);
-      color: #ffffff;
-      padding: 0.35rem 0.85rem;
-      border-radius: 20px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      display: inline-block;
-      box-shadow: 0 2px 4px rgba(41, 98, 255, 0.3);
-    }
-    #contextCount {
-      font-weight: 700;
-      color: #2962ff;
-      font-size: 1.1rem;
-    }
-    /* Resultados em grade e efeitos */
-    #results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-    .result:hover {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      transform: translateY(-4px);
-      border-color: #2962ff;
-    }
-    /* Estilo para o botão de pesquisa */
-    #searchForm button {
-      background: linear-gradient(135deg, #2962ff 0%, #1e40af 100%);
-      color: white;
-      width: 100%;
-      max-width: 300px;
-      margin: 0.5rem auto 0;
-      font-size: 1.05rem;
-      padding: 1rem 2rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-top: 3px solid #e2e8f0;
-      margin-top: auto;
-      color: #64748b;
-      font-size: 0.9rem;
-    }
-    footer p {
-      margin: 0.25rem 0;
-    }
-    footer p:first-child {
-      font-weight: 600;
-      color: #2962ff;
-    }
-    /* Mensagem de carregamento e vazio */
-    #results > p {
-      text-align: center;
-      padding: 3rem;
-      color: #64748b;
-      font-size: 1.1rem;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-    /* Responsividade melhorada */
-    @media (max-width: 768px) {
-      .container {
-        padding: 1.5rem 1rem;
-      }
-      .btns {
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      button {
-        padding: 0.95rem 1.8rem;
-        font-size: 0.95rem;
-        flex: 1;
-        min-width: 140px;
-      }
-      form {
-        padding: 1.5rem;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-      }
-      #results {
-        grid-template-columns: 1fr;
-      }
-      header img {
-        max-width: 250px;
-      }
-    }
-    /* Scrollbar personalizada */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e0;
-      border-radius: 5px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header>
-    <img src="logogdfsaude.png" alt="GDF Saúde" />
-  </header>
-  <div class="container">
-    <div class="btns">
-      <button class="direta" onclick="loadSheet('direta')">Rede Credenciada Direta</button>
-      <button class="indireta" onclick="loadSheet('indireta')">Rede Credenciada Indireta</button>
-    </div>
-    <form id="searchForm" onsubmit="event.preventDefault(); searchTable()">
-      <div class="context-bar" id="contextBar">
-        <div>
-          <strong>Rede:</strong> <span class="pill" id="contextNetwork">—</span>
+  <div class="page-wrapper">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="brand">
+          <img src="logogdfsaude.png" alt="GDF Saúde" />
+          <div class="brand-meta">
+            <strong>Rede Credenciada</strong>
+            <span>Busca e impressão para pacientes</span>
+          </div>
         </div>
-        <div>
-          <strong>Resultados:</strong> <span id="contextCount">0</span>
+
+        <div class="network-toggle" role="group" aria-label="Selecionar rede">
+          <button class="toggle-btn active" id="btnDireta" type="button" data-sheet="direta">Direta</button>
+          <button class="toggle-btn" id="btnIndireta" type="button" data-sheet="indireta">Indireta</button>
         </div>
       </div>
-      <div class="grid">
-        <div class="field">
+    </header>
+
+    <section class="toolbar" aria-label="Filtros">
+      <div class="toolbar-top">
+        <div class="context">
+          <div><strong>Rede:</strong> <span class="pill" id="contextNetwork">Direta</span></div>
+          <div><strong>Resultados:</strong> <span class="count" id="contextCount">0</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="printBtn" type="button">Imprimir (canvas)</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="field col-6">
           <label for="nome">Nome do local</label>
           <input type="text" id="nome" placeholder="Ex.: Hospital X" />
         </div>
-        <div class="field">
+
+        <div class="field col-3">
           <label for="especialidade">Especialidade</label>
           <input type="text" id="especialidade" list="especialidadesList" placeholder="Ex.: Cardiologia" />
-          <datalist id="especialidadesList"></datalist>
         </div>
-        <div class="field">
+
+        <div class="field col-3">
           <label for="especialidade2">Especialidade (2)</label>
           <input type="text" id="especialidade2" list="especialidadesList" placeholder="Ex.: Ortopedia" />
         </div>
-        <div class="field">
+
+        <div class="field col-4">
+          <label for="procedimento">Procedimento</label>
+          <input type="text" id="procedimento" list="procedimentosList" placeholder="Ex.: Exame de sangue" />
+        </div>
+
+        <div class="field col-4">
           <label for="bairro">Bairro</label>
           <select id="bairro">
-          <option value="">Todos os bairros</option>
-          <option>Águas Claras</option>
-          <option>Asa Norte</option>
-          <option>Asa Sul</option>
-          <option>Brasília</option>
-          <option>Ceilândia</option>
-          <option>Gama</option>
-          <option>Guará</option>
-          <option>Lago Sul</option>
-          <option>Plano Piloto</option>
-          <option>Riacho Fundo I</option>
-          <option>Setor Central (Gama)</option>
-          <option>Setor de Autarquias Sul</option>
-          <option>Setor de Clubes Esportivos Sul</option>
-          <option>Setor Hospitalar Sul</option>
-          <option>Sobradinho</option>
-          <option>Taguatinga</option>
+            <option value="">Todos os bairros</option>
+            <option>Águas Claras</option>
+            <option>Asa Norte</option>
+            <option>Asa Sul</option>
+            <option>Brasília</option>
+            <option>Ceilândia</option>
+            <option>Gama</option>
+            <option>Guará</option>
+            <option>Lago Sul</option>
+            <option>Plano Piloto</option>
+            <option>Riacho Fundo I</option>
+            <option>Setor Central (Gama)</option>
+            <option>Setor de Autarquias Sul</option>
+            <option>Setor de Clubes Esportivos Sul</option>
+            <option>Setor Hospitalar Sul</option>
+            <option>Sobradinho</option>
+            <option>Taguatinga</option>
           </select>
         </div>
-        <div class="field">
-          <label for="cidade">Cidade</label>
-          <input type="text" id="cidade" placeholder="Ex.: Brasília" />
-        </div>
-        <div class="field">
-          <label for="estado">Estado</label>
-          <input type="text" id="estado" placeholder="Ex.: DF" />
-        </div>
-        <div class="field">
+
+        <div class="field col-4">
           <label for="statusRede">Status da rede</label>
           <select id="statusRede">
             <option value="all" selected>Ativo e Descredenciado</option>
@@ -411,26 +92,52 @@
             <option value="inactive">Descredenciadas</option>
           </select>
         </div>
-        <div class="field">
-          <label for="procedimento">Procedimento</label>
-          <input type="text" id="procedimento" list="procedimentosList" placeholder="Ex.: Exame de sangue" />
-          <datalist id="procedimentosList"></datalist>
+
+        <div class="field col-6">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" placeholder="Ex.: Brasília" />
         </div>
+
+        <div class="field col-6">
+          <label for="estado">Estado</label>
+          <input type="text" id="estado" placeholder="Ex.: DF" />
+        </div>
+
+        <datalist id="especialidadesList"></datalist>
+        <datalist id="procedimentosList"></datalist>
       </div>
-      <button type="submit" style="margin-top: 1rem;">Pesquisar</button>
-    </form>
-    <div id="results"></div>
+    </section>
+
+    <main class="results-wrap" aria-label="Resultados">
+      <div class="section-header">
+        <div class="section-title">Prestadores</div>
+        <div class="result-count" id="resultCount"></div>
+      </div>
+      <div class="cards-grid" id="cardsGrid"></div>
+      <div class="empty-state" id="emptyState">Nenhum resultado encontrado. Ajuste os filtros e tente novamente.</div>
+    </main>
+
+    <footer>
+      <p>Versão: 3.0.0</p>
+      <p>Desenvolvido por: Rafael Barros</p>
+    </footer>
   </div>
 
-  <footer>
-    <p>Versão: 2.2.0</p>
-    <p>Desenvolvido por: Rafael Barros</p>
-  </footer>
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Detalhes do prestador">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div style="margin-top:10px"><span class="status-pill active" id="modalStatus"></span></div>
+        </div>
+        <button class="modal-close" id="modalClose" type="button">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
 
+  <script src="assets/app.js"></script>
   <script>
-    let data;
-    let currentSheet;
-    let similarityMap;
     const inactiveNetworkNamesRaw = `
 A CLÍNICA VIVER CLÍNICA DE IMAGENS MÉDICAS LTDA - FILIAL
 AA M. ISRAEL - SAÚDE LTDA
@@ -659,252 +366,11 @@ VIVA MULTICLINICAS E TREINAMENTOS LTDA 31.538.298/0001-11
 VIVACE FISIOTERAPIA E MEDICINA INTEGRADA LTDA 08.685.236/0001-10
 VIVACE FISIOTERAPIA E MEDICINA INTEGRADA LTDA 08.685.236/0003-82
 WE ORTOPEDIA CONTEMPORANEA LTDA
-`.trim().split('\n').map(name => name.trim()).filter(Boolean);
+`;
 
-    const normalize = (str) => {
-      if (!str) return '';
-      return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    };
-
-    const sanitizeNetworkName = (name) => {
-      return normalize(name)
-        .replace(/\b\d{2}\.?\d{3}\.?\d{3}\/\d{4}-?\d{2}\b/g, ' ')
-        .replace(/\b\d{2}\/\d{2}\/\d{4}\b/g, ' ')
-        .replace(/[.,()/\-]/g, ' ')
-        .replace(/\b(s\/s|s\.a|ltda|eireli|me|ss|sa)\b/g, ' ')
-        .replace(/\b(filial|matriz|unidade)\b/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-    };
-
-    const inactiveNetworkNames = inactiveNetworkNamesRaw.map(sanitizeNetworkName);
-    const inactiveNetworks = new Set(inactiveNetworkNames);
-
-    const getSimilarityMapping = (specialties) => {
-      const map = {};
-      const synonyms = [
-        ['imologia', 'imunologia'],
-        ['ortopedista', 'ortopedia'],
-        ['fisioterpia', 'fisioterapia'],
-        ['cirirgia', 'cirurgia'],
-        ['angilogia', 'angiologia'],
-        ['anestesioloagia', 'anestesiologia'],
-        ['anestologia', 'anestesiologia'],
-        ['dematologia', 'dermatologia'],
-        ['dermatlogia', 'dermatologia'],
-        ['coloprtologia', 'coloproctologia'],
-        ['coloproctolgia', 'coloproctologia'],
-        ['coloproctoloiga', 'coloproctologia'],
-        ['clinica med', 'clínica médica'],
-        ['clniica medica', 'clínica médica'],
-        ['clínica médfica', 'clínica médica'],
-        ['clínico geral', 'clínica geral'],
-        ['cirugiao', 'cirurgia'],
-        ['cirurgia ancologica', 'cirurgia oncológica'],
-        ['cirurgia oncolgico', 'cirurgia oncológica'],
-        ['cancerologia/oncologia', 'oncologia'],
-        ['cancerologia', 'oncologia'],
-      ];
-
-      synonyms.forEach(pair => {
-        const [typo, correct] = pair;
-        specialties.forEach(s => {
-          if (s.includes(normalize(typo))) {
-            map[s] = normalize(correct);
-          }
-        });
-      });
-      return map;
-    };
-
-    const isInactiveNetwork = (entry) => {
-      const networkName = sanitizeNetworkName(entry?.nome);
-      if (!networkName) return false;
-      if (inactiveNetworks.has(networkName)) return true;
-
-      return inactiveNetworkNames.some((inactiveName) => {
-        if (!inactiveName) return false;
-        const shorter = networkName.length <= inactiveName.length ? networkName : inactiveName;
-        const longer = networkName.length > inactiveName.length ? networkName : inactiveName;
-        return shorter.length >= 12 && longer.includes(shorter);
-      });
-    };
-
-    const loadSpecialties = async () => {
-      try {
-        const res = await fetch('especialidades_exatas.json');
-        const specialties = await res.json();
-
-        const uniqueSpecialties = new Set();
-        specialties.forEach(spec => {
-          const individualSpecs = spec.split(/, |[\n]/).map(s => s.trim());
-          individualSpecs.forEach(s => {
-            if (s) {
-              uniqueSpecialties.add(s);
-            }
-          });
-        });
-
-        const sortedSpecialties = Array.from(uniqueSpecialties).sort();
-        similarityMap = getSimilarityMapping(sortedSpecialties.map(normalize));
-
-        const datalist = document.getElementById('especialidadesList');
-        sortedSpecialties.forEach(spec => {
-          const option = document.createElement('option');
-          option.value = spec;
-          datalist.appendChild(option);
-        });
-
-      } catch (error) {
-        console.error('Erro ao carregar especialidades:', error);
-      }
-    };
-
-    const loadProcedures = async () => {
-      try {
-        const res = await fetch('procedimentos_exatos.json');
-        const procedures = await res.json();
-
-        const uniqueProcedures = new Set();
-        procedures.forEach(proc => {
-          const individualProcs = proc.split(/, |[\n]/).map(p => p.trim());
-          individualProcs.forEach(p => {
-            if (p) {
-              uniqueProcedures.add(p);
-            }
-          });
-        });
-
-        const sortedProcedures = Array.from(uniqueProcedures).sort();
-
-        const datalist = document.getElementById('procedimentosList');
-        sortedProcedures.forEach(proc => {
-          const option = document.createElement('option');
-          option.value = proc;
-          datalist.appendChild(option);
-        });
-
-      } catch (error) {
-        console.error('Erro ao carregar procedimentos:', error);
-      }
-    };
-
-    const loadSheet = async (sheet) => {
-      currentSheet = sheet;
-      const form = document.getElementById('searchForm');
-      const resultsContainer = document.getElementById('results');
-      const contextBar = document.getElementById('contextBar');
-      const contextNetwork = document.getElementById('contextNetwork');
-      form.style.display = 'flex';
-      resultsContainer.innerHTML = 'Carregando dados...';
-
-      try {
-        const res = await fetch(`${sheet}.json`);
-        data = await res.json();
-
-        if (data && data["REDE CREDENCIADA"] && Array.isArray(data["REDE CREDENCIADA"])) {
-          data = data["REDE CREDENCIADA"];
-        }
-
-        resultsContainer.innerHTML = '';
-        contextBar.style.display = 'flex';
-        contextNetwork.textContent = sheet === 'direta' ? 'Direta' : 'Indireta';
-        searchTable();
-      } catch (error) {
-        console.error(`Erro ao carregar a planilha ${sheet}:`, error);
-        resultsContainer.innerHTML = `<p>Erro ao carregar os dados. Verifique se o arquivo ${sheet}.json está disponível e formatado corretamente.</p>`;
-      }
-    };
-
-    const searchTable = () => {
-      if (!data) return;
-
-      const nome = normalize(document.getElementById('nome').value);
-      const especialidadeInput = normalize(document.getElementById('especialidade').value);
-      const especialidadeInput2 = normalize(document.getElementById('especialidade2')?.value);
-      const bairro = normalize(document.getElementById('bairro').value);
-      const cidade = normalize(document.getElementById('cidade').value);
-      const estado = normalize(document.getElementById('estado').value);
-      const procedimento = normalize(document.getElementById('procedimento').value);
-      const statusRede = document.getElementById('statusRede')?.value || 'all';
-
-      const canonicalSearchTerm = similarityMap[especialidadeInput] || especialidadeInput;
-      const canonicalSearchTerm2 = similarityMap[especialidadeInput2] || especialidadeInput2;
-
-      const results = data.filter(entry => {
-        const isInactive = isInactiveNetwork(entry);
-        const statusMatch =
-          statusRede === 'all' ||
-          (statusRede === 'active' && !isInactive) ||
-          (statusRede === 'inactive' && isInactive);
-
-        const entrySpecialties = entry.especialidade ? entry.especialidade.split(/, |[\n]/).map(s => normalize(s)) : [];
-        const entrySpecialtiesCanonical = entrySpecialties.map(s => similarityMap[s] || s);
-
-        const matchesSpecialty = (term) => !term || entrySpecialtiesCanonical.some(s => s.includes(term));
-        const specialtyMatch = matchesSpecialty(canonicalSearchTerm) && matchesSpecialty(canonicalSearchTerm2);
-
-        // Busca por procedimento - pode ser string ou array
-        let procedimentoMatch = true;
-        if (procedimento) {
-          if (!entry.procedimento || (typeof entry.procedimento === 'string' && entry.procedimento.trim() === '')) {
-            procedimentoMatch = false;
-          } else {
-            const entryProcedimentos = Array.isArray(entry.procedimento) 
-              ? entry.procedimento.map(p => normalize(String(p).trim())).filter(p => p)
-              : normalize(entry.procedimento).split(/, |[\n]/).map(s => normalize(s.trim())).filter(s => s);
-            const procedimentoNormalized = normalize(entry.procedimento);
-            procedimentoMatch = entryProcedimentos.some(p => p.includes(procedimento)) || 
-                                procedimentoNormalized.includes(procedimento);
-          }
-        }
-
-        return statusMatch &&
-               (!nome || normalize(entry.nome).includes(nome)) &&
-               specialtyMatch &&
-               (!bairro || normalize(entry.bairro).includes(bairro)) &&
-               (!cidade || normalize(entry.cidade).includes(cidade)) &&
-               (!estado || normalize(entry.estado).includes(estado)) &&
-               procedimentoMatch;
-      });
-
-      const container = document.getElementById('results');
-      const contextCount = document.getElementById('contextCount');
-      container.innerHTML = '';
-      if (results.length === 0) {
-        container.innerHTML = '<p>🔍 Nenhum resultado encontrado. Tente ajustar os filtros de busca.</p>';
-        if (contextCount) contextCount.textContent = '0';
-        return;
-      }
-
-      if (contextCount) contextCount.textContent = String(results.length);
-      results.forEach(entry => {
-        const isInactive = isInactiveNetwork(entry);
-        const statusClass = isInactive ? 'inactive' : 'active';
-        const statusLabel = isInactive ? 'Descredenciado' : 'Ativa';
-        const procedimentoHtml = entry.procedimento && (Array.isArray(entry.procedimento) ? entry.procedimento.length > 0 : entry.procedimento.trim() !== '') 
-          ? `<p><strong>Procedimento:</strong> ${Array.isArray(entry.procedimento) ? entry.procedimento.join(', ') : entry.procedimento}</p>` 
-          : '';
-        
-        container.innerHTML += `
-          <div class="result ${statusClass}">
-            <div class="result-header">
-              <h3>${entry.nome}</h3>
-              <span class="status-pill ${statusClass}">${isInactive ? '🔴' : '🟢'} ${statusLabel}</span>
-            </div>
-            <p><strong>📞 Telefone:</strong> ${entry.telefone ? `<a href="tel:${entry.telefone.replace(/\D/g,'')}">${entry.telefone}</a>` : '<span style="color: #94a3b8;">Não informado</span>'}</p>
-            <p><strong>🏥 Especialidade:</strong> ${entry.especialidade}</p>
-            ${procedimentoHtml ? procedimentoHtml.replace('<strong>Procedimento:', '<strong>💊 Procedimento:') : ''}
-            <p><strong>📍 Endereço:</strong> ${entry.bairro}, ${entry.cidade} - ${entry.estado}</p>
-          </div>
-        `;
-      });
-    };
-
-    window.onload = () => {
-      loadSpecialties();
-      loadProcedures();
-    };
+    window.addEventListener("DOMContentLoaded", () => {
+      window.__RedeCredenciadaApp?.init({ inactiveNetworkNamesRaw });
+    });
   </script>
 </body>
 </html>
